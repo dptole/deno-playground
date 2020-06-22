@@ -10,12 +10,17 @@
 
 */
 class Student {
-    fullName: string
-    anotherFullName: String = 'string seems to be just like an interface. String can also be used as a type... Here I am initilizing the attribute. Without it an error would occur: error: TS2564 [ERROR]: Property "anotherFullName" has no initializer and is not definitely assigned in the constructor.'
+  fullName: string;
+  anotherFullName: String =
+    'string seems to be just like an interface. String can also be used as a type... Here I am initilizing the attribute. Without it an error would occur: error: TS2564 [ERROR]: Property "anotherFullName" has no initializer and is not definitely assigned in the constructor.';
 
-    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
-        this.fullName = firstName + ' ' + middleInitial + ' ' + lastName
-    }
+  constructor(
+    public firstName: string,
+    public middleInitial: string,
+    public lastName: string,
+  ) {
+    this.fullName = firstName + " " + middleInitial + " " + lastName;
+  }
 }
 
 /*
@@ -27,47 +32,47 @@ class Student {
   error: TS2693 [ERROR]: 'Person' only refers to a type, but is being used as a value here.
 */
 interface Person {
-    firstName: string
-    lastName: string
+  firstName: string;
+  lastName: string;
 }
 
 /*
   Interfaces can be used as parameter types.
 */
 function greetPerson(person: Person) {
-    return 'Hello person ' + person.firstName + ' ' + person.lastName
+  return "Hello person " + person.firstName + " " + person.lastName;
 }
 
 /*
   Classes can also be used as parameter types.
 */
 function greetStudent(student: Student) {
-    return 'Hello student ' + student.firstName + ' ' + student.lastName
+  return "Hello student " + student.firstName + " " + student.lastName;
 }
 
 /*
   New instance same as in JS.
 */
-const student = new Student('Class', 'Middle', 'Instance')
+const student = new Student("Class", "Middle", "Instance");
 
 const object = {
-    firstName: 'Simple',
-    lastName: 'Object'
-}
+  firstName: "Simple",
+  lastName: "Object",
+};
 
-console.log(student, '\n')
+console.log(student, "\n");
 
-console.log('Greet person using student')
-console.log('   ', greetPerson(student), '\n')
+console.log("Greet person using student");
+console.log("   ", greetPerson(student), "\n");
 
-console.log('Greet student using student')
-console.log('   ', greetStudent(student), '\n')
+console.log("Greet student using student");
+console.log("   ", greetStudent(student), "\n");
 
-console.log('Object')
-console.log('   ', object, '\n')
+console.log("Object");
+console.log("   ", object, "\n");
 
-console.log('Greet person using object')
-console.log('   ', greetPerson(object), '\n')
+console.log("Greet person using object");
+console.log("   ", greetPerson(object), "\n");
 
 /*
 I can't call this function using object.
@@ -80,11 +85,11 @@ Type '{ firstName: string; lastName: string; }' is missing the following propert
 
 */
 
-console.log('Log greetPerson')
-console.log(greetPerson + '\n')
+console.log("Log greetPerson");
+console.log(greetPerson + "\n");
 
-console.log('Log greetStudent')
-console.log(greetStudent + '\n')
+console.log("Log greetStudent");
+console.log(greetStudent + "\n");
 
-console.log('Log Student class')
-console.log(Student + '\n')
+console.log("Log Student class");
+console.log(Student + "\n");

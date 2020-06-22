@@ -1,15 +1,14 @@
-
 /*
   When using interface methods the body of the declaration must only
   state the type that method should return.
 */
 interface Speaker {
-    speak: () => string
-    name: string
-    childOrUndefined?: Person
-    childOrNull: Person | null
+  speak: () => string;
+  name: string;
+  childOrUndefined?: Person;
+  childOrNull: Person | null;
 
-    /*
+  /*
       Very weird error messages
 
           error: TS1070 [ERROR]: 'private' modifier cannot appear on a type member.
@@ -19,9 +18,8 @@ interface Speaker {
     */
 }
 
-
 class Person implements Speaker {
-    /*
+  /*
       It detects when a class's interface is badly implemented
       For the missing name property
 
@@ -35,26 +33,28 @@ class Person implements Speaker {
                   ~~~~
 
     */
-    name: string
-    childOrUndefined?: Person
-    childOrNull: Person | null
+  name: string;
+  childOrUndefined?: Person;
+  childOrNull: Person | null;
 
-
-    /*
+  /*
       Actually actionable error message
 
           error: TS1016 [ERROR]: A required parameter cannot follow an optional parameter.
              constructor(name: string, childOrUndefined?: Person, childOrNull: Person | null) {
                                                                   ~~~~~~~~~~~
     */
-    constructor(name: string, childOrNull: Person | null = null, childOrUndefined?: Person) {
-        this.name = name
-        this.childOrUndefined = childOrUndefined
-        this.childOrNull = childOrNull
-    }
+  constructor(
+    name: string,
+    childOrNull: Person | null = null,
+    childOrUndefined?: Person,
+  ) {
+    this.name = name;
+    this.childOrUndefined = childOrUndefined;
+    this.childOrNull = childOrNull;
+  }
 
-
-    /*
+  /*
       For the missing speak() method
 
           error: TS2420 [ERROR]: Class 'Person' incorrectly implements interface 'Speaker'.
@@ -74,42 +74,38 @@ class Person implements Speaker {
               speak():number {
               ~~~~~
     */
-    speak(): string {
-        console.log('  this.#newSyntaxForPrivateFields')
-        console.log(' ', this.#newSyntaxForPrivateFields)
+  speak(): string {
+    console.log("  this.#newSyntaxForPrivateFields");
+    console.log(" ", this.#newSyntaxForPrivateFields);
 
-        console.log('  this.oldSyntaxForPrivateFields')
-        console.log(' ', this.oldSyntaxForPrivateFields)
+    console.log("  this.oldSyntaxForPrivateFields");
+    console.log(" ", this.oldSyntaxForPrivateFields);
 
-        return Math.random().toString(36).substr(2)
-    }
+    return Math.random().toString(36).substr(2);
+  }
 
-
-    /*
+  /*
       We can have static methods with the same name as the instance ones
     */
-    static speak = (): number => {
-        console.log('  Person.privateStaticName')
-        console.log(' ', Person.oldStylePrivateStaticName)
+  static speak = (): number => {
+    console.log("  Person.privateStaticName");
+    console.log(" ", Person.oldStylePrivateStaticName);
 
-        return Math.random()
-    }
+    return Math.random();
+  };
 
-
-    /*
+  /*
       Correct handling of private properties
 
           error: TS18013 [ERROR]: Property '#newSyntaxForFields' is not accessible outside class 'Person' because it has a private identifier.
           console.log(me.#newSyntaxForFields)
 
     */
-    #newSyntaxForPrivateFields: string[] = 'dptole'.split('')
+  #newSyntaxForPrivateFields: string[] = "dptole".split("");
 
+  private oldSyntaxForPrivateFields: string[] = "rubyno".split("");
 
-    private oldSyntaxForPrivateFields: string[] = 'rubyno'.split('')
-
-
-    /*
+  /*
       Interesting error when trying to create a static property that conflicts
       with something
 
@@ -117,10 +113,9 @@ class Person implements Speaker {
               static name: string = 'Static person'
 
     */
-    static staticName: string = 'Static person'
+  static staticName: string = "Static person";
 
-
-    /*
+  /*
       Interesting error when trying to access a private static property
 
           error: TS2341 [ERROR]: Property 'privateStaticName' is private and only accessible within class 'Person'.
@@ -132,7 +127,7 @@ class Person implements Speaker {
         static #newStylePrivateStaticName: string = 'Private static person'
 
     */
-    private static oldStylePrivateStaticName: string = 'Private static person'
+  private static oldStylePrivateStaticName: string = "Private static person";
 }
 
 function runNpcDialog<T extends Person>(people: T[]): T[] {
@@ -140,23 +135,20 @@ function runNpcDialog<T extends Person>(people: T[]): T[] {
     You can inform the return type for anonymous functions too
   */
   people.forEach((person): void =>
-      console.log('NPC ' + person.name + ' says ' + person.speak())
-  )
+    console.log("NPC " + person.name + " says " + person.speak())
+  );
 
-  return people
+  return people;
 }
 
+console.log("const me = new Person('dptole')");
+const me = new Person("dptole");
+console.log(me);
+console.log("");
 
-console.log('const me = new Person(\'dptole\')')
-const me = new Person('dptole')
-console.log(me)
-console.log('')
-
-
-console.log('runNpcDialog([me])')
-runNpcDialog([me])
-console.log('')
-
+console.log("runNpcDialog([me])");
+runNpcDialog([me]);
+console.log("");
 
 /*
   Interestingly enough it seems like properties that start with # are considered to be private but are only allowed on class bodies
@@ -165,11 +157,19 @@ console.log('')
       const fromScratch = {name: 'dude', speak: function () { return 'ree' }, #newSyntaxForPrivateFields: ['d'], oldSyntaxForPrivateFields: 'txt' }
 
 */
-console.log('const fromScratch = {name: \'dude\', speak: function () { return \'ree\' }, #newSyntaxForPrivateFields: [\'d\'], oldSyntaxForPrivateFields: \'txt\' }')
-const fromScratch = {name: 'dude', speak: function () { return 'ree' }, '#newSyntaxForPrivateFields': ['d'], oldSyntaxForPrivateFields: 'txt' }
-console.log(fromScratch)
-console.log('')
-
+console.log(
+  "const fromScratch = {name: 'dude', speak: function () { return 'ree' }, #newSyntaxForPrivateFields: ['d'], oldSyntaxForPrivateFields: 'txt' }",
+);
+const fromScratch = {
+  name: "dude",
+  speak: function () {
+    return "ree";
+  },
+  "#newSyntaxForPrivateFields": ["d"],
+  oldSyntaxForPrivateFields: "txt",
+};
+console.log(fromScratch);
+console.log("");
 
 /*
   Seems like a wrongly categorized error message but I get it
@@ -182,12 +182,10 @@ runNpcDialog([fromScratch])
 console.log('')
 */
 
+console.log("Person.staticName");
+console.log(Person.staticName);
+console.log("");
 
-console.log('Person.staticName')
-console.log(Person.staticName)
-console.log('')
-
-
-console.log('Person.speak()')
-console.log(Person.speak())
-console.log('')
+console.log("Person.speak()");
+console.log(Person.speak());
+console.log("");
