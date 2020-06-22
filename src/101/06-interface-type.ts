@@ -7,7 +7,7 @@ interface GuessNumberInterface {
 }
 
 
-class GuessNumber {
+class GuessNumber implements GuessNumberInterface {
     constructor(public diff: Diff, public attempts: number) {
     }
 }
