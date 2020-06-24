@@ -12,18 +12,16 @@ function proxify<T>(o: T): Proxify<T> {
   const proxyfied = {} as Proxify<T>;
 
   for (const prop in o) {
-    {
-      let currentValue = o[prop];
+    let currentValue = o[prop];
 
-      proxyfied[prop] = {
-        get: function () {
-          return currentValue;
-        },
-        set: function (newValue) {
-          currentValue = newValue;
-        },
-      };
-    }
+    proxyfied[prop] = {
+      get: function () {
+        return currentValue;
+      },
+      set: function (newValue) {
+        currentValue = newValue;
+      },
+    };
   }
 
   return proxyfied;
