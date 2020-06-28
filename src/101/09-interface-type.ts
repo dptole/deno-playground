@@ -945,7 +945,6 @@ namespace Game {
     set kill(player: string) {
       const index = players.indexOf(player);
       if (~index) {
-        System.Audio.gameOver();
         $players.splice(index, 1);
       }
     },
