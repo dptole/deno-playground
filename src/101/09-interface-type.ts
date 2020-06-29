@@ -506,7 +506,8 @@ class Player {
     for (let i = 0; i < moneyDecimalPlaces.length; i++) {
       formattedMoney += moneyDecimalPlaces[i];
 
-      if (0 === ((moneyDecimalPlaces.length - i) % 4)) {
+      const revIndex: number = moneyDecimalPlaces.length - i - 1;
+      if (revIndex > 0 && 0 === (revIndex % 3)) {
         formattedMoney += ".";
       }
     }
