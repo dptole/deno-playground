@@ -14,28 +14,59 @@ async function readUserInputHidden(question: string): Promise<string> {
   }
 
   let input = "";
+  let currentLine = question + " ";
+  let stars = "";
+  let uint8array: Uint8Array = new Uint8Array(0);
 
-  Deno.stdout.write(new TextEncoder().encode(question + " "));
+  Deno.stdout.write(new TextEncoder().encode(currentLine));
   Deno.setRaw(0, true);
 
   while (1) {
-    const uint8array: Uint8Array = new Uint8Array(1);
+    let removeStar = false;
+    let addStar = false;
+    uint8array = new Uint8Array(4);
     const length = await Deno.stdin.read(uint8array);
 
     if (!length) {
-      break;
-    }
-
-    const newInput = new TextDecoder().decode(uint8array.slice(0, length));
-    input += newInput;
-
-    if (["\x03", "\x04", "\x08", "\r", "\n"].includes(newInput)) {
-      input = input.slice(0, -1);
       Deno.setRaw(Deno.stdin.rid, false);
       break;
     }
 
-    Deno.stdout.write(new TextEncoder().encode("*"));
+    if (length !== 1) {
+      continue;
+    }
+
+    const newInput = new TextDecoder().decode(uint8array.slice(0, length));
+
+    if (["\x03", "\x04", "\x08", "\r", "\n"].includes(newInput)) {
+      if (newInput !== "\x08") {
+        Deno.setRaw(Deno.stdin.rid, false);
+      }
+      break;
+    }
+
+    if ("\x7f" === newInput) {
+      removeStar = input.length > 0;
+    } else {
+      addStar = true;
+    }
+
+    if (removeStar) {
+      Deno.stdout.write(
+        new TextEncoder().encode(
+          "\r" + " ".repeat(currentLine.length + stars.length),
+        ),
+      );
+      stars = stars.slice(0, -1);
+      input = input.slice(0, -1);
+    }
+
+    if (addStar) {
+      stars += "*";
+      input += newInput;
+    }
+
+    Deno.stdout.write(new TextEncoder().encode("\r" + currentLine + stars));
   }
 
   console.log("");
@@ -52,7 +83,7 @@ async function readUserInput(question: string): Promise<string> {
 
 readUserInput("Email:").then((email) =>
   readUserInputHidden("Password:").then((password) => {
-    console.log("Your email is", email);
-    console.log("Your password is", password);
+    console.log(`Your email is "${email}" (LENGTH=${email.length})`);
+    console.log(`Your password is "${password}" (LENGTH=${password.length})`);
   })
-);
+).catch((error) => console.log("Error", error)).then(() => Deno.exit());
