@@ -3,6 +3,11 @@
 */
 declare module Deno {
   function setRaw(rid: number, mode: boolean): void;
+
+  module core {
+    function encode(input: string): Uint8Array;
+    function decode(input: Uint8Array): string;
+  }
 }
 
 async function readUserInputHidden(question: string): Promise<string> {
@@ -18,7 +23,7 @@ async function readUserInputHidden(question: string): Promise<string> {
   let stars = "";
   let uint8array: Uint8Array = new Uint8Array(0);
 
-  Deno.stdout.write(new TextEncoder().encode(currentLine));
+  Deno.stdout.write(Deno.core.encode(currentLine));
   Deno.setRaw(0, true);
 
   while (1) {
@@ -36,7 +41,7 @@ async function readUserInputHidden(question: string): Promise<string> {
       continue;
     }
 
-    const newInput = new TextDecoder().decode(uint8array.slice(0, length));
+    const newInput = Deno.core.decode(uint8array.slice(0, length));
 
     if (["\x03", "\x04", "\x08", "\r", "\n"].includes(newInput)) {
       if (newInput !== "\x08") {
@@ -53,7 +58,7 @@ async function readUserInputHidden(question: string): Promise<string> {
 
     if (removeStar) {
       Deno.stdout.write(
-        new TextEncoder().encode(
+        Deno.core.encode(
           "\r" + " ".repeat(currentLine.length + stars.length),
         ),
       );
@@ -66,7 +71,7 @@ async function readUserInputHidden(question: string): Promise<string> {
       input += newInput;
     }
 
-    Deno.stdout.write(new TextEncoder().encode("\r" + currentLine + stars));
+    Deno.stdout.write(Deno.core.encode("\r" + currentLine + stars));
   }
 
   console.log("");
@@ -75,10 +80,10 @@ async function readUserInputHidden(question: string): Promise<string> {
 }
 
 async function readUserInput(question: string): Promise<string> {
-  Deno.stdout.write(new TextEncoder().encode(question + " "));
+  Deno.stdout.write(Deno.core.encode(question + " "));
   const uint8array: Uint8Array = new Uint8Array(1000);
   const length = await Deno.stdin.read(uint8array) as number;
-  return new TextDecoder().decode(uint8array.slice(0, length - 1));
+  return Deno.core.decode(uint8array.slice(0, length - 1));
 }
 
 readUserInput("Email:").then((email) =>
