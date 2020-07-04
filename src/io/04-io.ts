@@ -1,5 +1,5 @@
 /*
-  deno run --allow-read --allow-write src/std/04-io.ts
+  deno run --allow-read --allow-write src/io/04-io.ts
 */
 const thisFile = new URL(import.meta.url).pathname;
 const mainwd = Deno.cwd();

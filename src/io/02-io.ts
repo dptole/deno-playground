@@ -1,5 +1,5 @@
 /*
-  deno run --allow-read src/std/02-io.ts
+  deno run --allow-read src/io/02-io.ts
 */
 declare module Deno {
   module core {

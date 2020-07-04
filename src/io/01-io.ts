@@ -1,5 +1,5 @@
 /*
-  deno run --unstable src/std/01-io.ts
+  deno run --unstable src/io/01-io.ts
 */
 declare module Deno {
   function setRaw(rid: number, mode: boolean): void;

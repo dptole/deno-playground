@@ -1,5 +1,5 @@
 /*
-  deno run --allow-read src/std/03-io.ts
+  deno run --allow-read src/io/03-io.ts
 
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 */
